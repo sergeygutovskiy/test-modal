@@ -2,7 +2,7 @@
 
 import "src/app/global.css";
 
-import { MouseEvent, useState } from "react";
+import { MouseEvent, ReactNode, useState } from "react";
 import styled from "styled-components";
 import Head from "next/head";
 
@@ -102,6 +102,72 @@ const CloseButton = styled.button`
   }
 `;
 
+const Checkbox = ({ children, id } : { children: ReactNode, id: string }) => {
+  
+  const Wrapper = styled.div`
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+  `;
+
+  const ToggleWrapper = styled.div`
+    position: relative;
+    width: 20px;
+    height: 20px;
+  `;
+
+  const Toggler = styled.input`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  `;
+
+  const TogglerBackground = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px black solid;
+
+    background-position: center;
+    background-repeat: no-repeat;
+
+    pointer-events: none;
+
+    ${Toggler}:checked + & {
+      background-image: url('/checked.svg');
+    }
+  `;
+
+  const Label = styled.label`
+    margin-left: 12px;
+    font-size: 12px;
+
+    & a {
+      color: inherit;
+      text-decoration: underline;
+    }
+  `;
+
+  return (
+    <Wrapper>
+      <ToggleWrapper>
+        <Toggler type="checkbox" id={id}/>
+        <TogglerBackground/>
+      </ToggleWrapper>
+
+      <Label htmlFor={id}>
+        {children}
+      </Label>
+    </Wrapper>
+  );
+};
+
 const Page = () => {
   const [ isModalOpen, setIsModalOpen ] = useState(false);
 
@@ -136,6 +202,10 @@ const Page = () => {
             
             <Input placeholder="Введите свой e-mail"/>
             
+            <Checkbox id="checkbox">
+              Я согласен с <a href="/">Политикой конфиденциальности</a>
+            </Checkbox>
+
             <SubmitButton>ПОДПИСАТЬСЯ</SubmitButton>
           </Modal>
         </ModalWrapper>
